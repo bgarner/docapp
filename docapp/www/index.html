@@ -27,13 +27,25 @@
         <link rel="stylesheet" type="text/css" href="css/app.css" />
         <title>FGL Service Shop App</title>
     </head>
+
+                <div id="overlay">
+                <div>
+                    Click here to [<a href='#' onclick='closeModal()'>close</a>]
+                    <p>Content you want the user to see goes here.</p>
+                </div>
+            </div>
+
+            
     <body id="home">
+
+
+
 
             <div id="nav">
                 <img id="logo" src="img/logo.png" style="padding-bottom: 150px;" />
 
                 <img src="img/divider.gif" />
-                <span class="navitem" id="blackfriday" data-title="BLACK FRIDAY 2015" style="">BLACK FRIDAY</span>
+                <span class="navitem" id="blackfriday" data-nav="nav-blackfriday" data-title="BLACK FRIDAY 2015" style="">BLACK FRIDAY</span>
                 
                 <span class="navitem" id="how" style="" data-title="HOLIDAY 2015">HOLIDAY 2015</span>
 <!--                 <span class="navitem" id="training" style="">TRAINING</span> -->
@@ -47,15 +59,15 @@
             <div id="panel">
 
                 <img src="img/close.png" id="close" />
-                <div id="navtitle"><span id="topLevelTitle"></span> <span id="title-divider">//</span> <span id="subTitle"></span> </div>
+                <div id="navtitle"><span id="topLevelTitle"></span> <span id="title-divider">//</span> <span id="subTitle"></span> <span id="back" data-backto="">Back</span></div>
 
                 <div id="nav-blackfriday" class="navbox">
                     
-                    <div class="selectbox" id="snowservices-nav">
+                    <div class="selectbox" id="snowservices-nav" data-file="WK 34 FY16 PB.pdf">
                         <div class="selectbox-content">
                             <img src="img/snowsports-nav.jpg" />
                             <h2>Playbook</h2>
-                            <p>Lorem ipsum dolor sit amet, conse ctetur adipisicing elit. Ipsam, quia suscipit nulla tenetur cupiditate perferendis omnis ratione consequatur.</p>
+                            <p>This is going to load a PDF</p>
                         </div>
                     </div> <!-- end snow -->
 
@@ -67,7 +79,7 @@
                         </div>
                     </div> <!-- end hockey -->
 
-                    <div class="selectbox" id="blackfridayplaybook-subnav">
+                    <div class="selectbox hasSubNav" id="" data-parent="nav-blackfriday" data-subnavid="subnav-blackfridayvisual">
                         <div class="selectbox-content">
                             <img src="img/bikes-nav.jpg" />
                             <h2>Visual</h2>
@@ -102,12 +114,12 @@
 
 
 
-                                    <div id="subnav-blackfridayvisual" class="navbox">
+                                    <div id="subnav-blackfridayvisual" data-title="Visual" class="navbox">
                                         
-                                        <div class="selectbox" id="blackfridayplaybook-subnav">
+                                        <div class="selectbox hasSubNav" id="blackfridayplaybook-subnav" class="navbox" data-parent="subnav-blackfridayvisual" data-subnavid="subnav-test">
                                             <div class="selectbox-content">
                                                 <img src="img/snowsports-nav.jpg" />
-                                                <h2>Visual - Hardgoods</h2>
+                                                <h2>Hardgoods</h2>
                                                 <p>Lorem ipsum dolor sit amet, conse ctetur adipisicing elit. Ipsam, quia suscipit nulla tenetur cupiditate perferendis omnis ratione consequatur.</p>
                                             </div>
                                         </div> <!-- end snow -->
@@ -115,7 +127,7 @@
                                         <div class="selectbox" id="hockeyservices-nav">
                                             <div class="selectbox-content">
                                                 <img src="img/hockey-nav.jpg" />
-                                                <h2>Visual - Softgoods</h2>
+                                                <h2>Softgoods</h2>
                                                 <p>Lorem ipsum dolor sit amet, conse ctetur adipisicing elit. Ipsam, quia suscipit nulla tenetur cupiditate perferendis omnis ratione consequatur.</p>
                                             </div>
                                         </div> <!-- end hockey -->
@@ -123,7 +135,7 @@
                                         <div class="selectbox" id="blackfridayvisual-nav">
                                             <div class="selectbox-content">
                                                 <img src="img/bikes-nav.jpg" />
-                                                <h2>Visual - Footwear</h2>
+                                                <h2>Footwear</h2>
                                                 <p>Lorem ipsum dolor sit amet, conse ctetur adipisicing elit. Ipsam, quia suscipit nulla tenetur cupiditate perferendis omnis ratione consequatur.</p>
                                             </div>
                                         </div> <!-- end bikes -->
@@ -132,7 +144,34 @@
                                     </div> <!-- end blackfriday -->
 
 
+                                                <div id="subnav-test" data-title="Visual <span class='title-divider-sm'>//</span> Hardgoods" class="navbox">
+                                                    
+                                                    <div class="selectbox" id="test1-subnav">
+                                                        <div class="selectbox-content">
+                                                            <img src="img/snowsports-nav.jpg" />
+                                                            <h2>these</h2>
+                                                            <p>Lorem ipsum dolor sit amet, conse ctetur adipisicing elit. Ipsam, quia suscipit nulla tenetur cupiditate perferendis omnis ratione consequatur.</p>
+                                                        </div>
+                                                    </div> <!-- end snow -->
 
+                                                    <div class="selectbox" id="test2-nav">
+                                                        <div class="selectbox-content">
+                                                            <img src="img/hockey-nav.jpg" />
+                                                            <h2>are</h2>
+                                                            <p>Lorem ipsum dolor sit amet, conse ctetur adipisicing elit. Ipsam, quia suscipit nulla tenetur cupiditate perferendis omnis ratione consequatur.</p>
+                                                        </div>
+                                                    </div> <!-- end hockey -->
+
+                                                    <div class="selectbox" id="test3-nav">
+                                                        <div class="selectbox-content">
+                                                            <img src="img/bikes-nav.jpg" />
+                                                            <h2>test folders</h2>
+                                                            <p>Lorem ipsum dolor sit amet, conse ctetur adipisicing elit. Ipsam, quia suscipit nulla tenetur cupiditate perferendis omnis ratione consequatur.</p>
+                                                        </div>
+                                                    </div> <!-- end bikes -->
+
+                                    
+                                                </div> <!-- end blackfriday -->
 
 
 
@@ -202,9 +241,13 @@
                 <img src="img/splash.jpg" id="splash" />
             </div>
 
+
+
+
+
         <script type="text/javascript" src="spec/lib/jquery.js"></script>
         <script type="text/javascript" src="phonegap.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/app.js"></script>
         <script type="text/javascript">
             app.initialize();
         </script>

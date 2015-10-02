@@ -246,9 +246,6 @@ $('#otherservices-nav').click(function(){  loadMainContent("other-services")  })
 
 $('#blackfridayplaybook-subnav').click(function(){  loadSubNavContent("blackfridayvisual", "Visual")  });
 
-
-
-
 //how we do it
 $('#snowhow-nav').click(function(){ loadMainContent("snow-how") });
 $('#hockeyhow-nav').click(function(){ loadMainContent("hockey-how") });

@@ -1,21 +1,3 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
 var app = {
     // Application Constructor
     initialize: function() {
@@ -49,52 +31,180 @@ var app = {
 };
 
 $( document ).ready(function() {
-    //$("#nav").load("nav/main.html");
-
-    $('.navitem').click(function(){
-        var id = $(this).attr('id');
-        var title = $(this).attr('data-title');
-        openPanel(id, title);
-        $('.navitem').off('click'); //disable nav
-    });
-
-    $('#close').click(function(){
-        closePanel();
-        $( ".navitem" ).on( "click", function() {
-            var id = $(this).attr('id');
-            var title = $(this).attr('data-title');
-            console.log("tuitle:" + title);
-            openPanel(id, title);
-            $('.navitem').off('click');
-        });
-    });
-
+    initNav();
+    initSubNav();
+    initClose();
 });
 
-
-var openPanel = function()
+var initNav = function()
 {
+    $( ".navitem" ).on( "click", function() {
+        var id = $(this).attr('id'); 
+        var nav = $(this).attr('data-nav');
+        var title = $(this).attr('data-title');
+        openPanel(id, nav, title);
+        $('.navitem').off('click');
+    });
+}
 
+var initSubNav = function()
+{
+    $( ".hasSubNav" ).on( "click", function() { 
+        var nav = $(this).attr('data-subnavid');
+        var title = $(this).attr('data-title');
+        var parent = $(this).attr('data-parent');
+     //   console.log("attempting to load subnav: " + nav);
+        loadNavigation(nav, "1", parent);
+     });   
+}
+
+var initClose = function()
+{
+    $('#close').click(function(){
+        closePanel();
+        initNav();
+    });
+}
+
+var openPanel = function(id, nav, title)
+{
+    // console.log("opening panel with: " + id);
+    // console.log("attempting to load nav: " + nav);
+    $("#panel").addClass("open");
+    $("#arrow").hide();
+
+    $('.navitem').addClass("grey");
+    $('#'+id).removeClass("grey");
+
+    $( "#panel" ).animate({
+      width: "+=750"
+      }, 300, function() {
+        $("#close").fadeIn();
+        $("#navtitle").fadeIn();
+        setNavTitle(title);
+        loadNavigation(nav, 0, "");
+    });
 }
 
 var closePanel = function()
 { 
+    $("#navtitle").hide();
+    $(".navbox").hide();
+    $('.navitem').removeClass("grey");
 
+    $( "#panel" ).animate({
+      width: "-=750"
+      }, 300, function() {
+        //put the arrow back, if we need it
+        if( $('#main>#arrow') ) {
+            $("#arrow").show();
+        }
+    });
+    $("#close").hide();
+   // $("#navtitle").hide();
 }
 
+var loadNavigation = function(nav, isSubNav, parent)
+{ 
+    //console.log("loadNaviation called with: nav:"+ nav +" isSubNav:"+ isSubNav +" parent:"+ parent);
+    if(isSubNav ==1){
+        // console.log("loading SUB nav: "+ nav);
+        $(".navbox").hide();
+        // $("#title-divider").hide();
+        var title = $("#".nav).attr('data-title');
 
-var loadNavigation = function()
+        console.log("title:" + title +" from: " + nav);
+
+        console.log("nav: #" + nav);
+        setSubTitle(title);
+        setBackButton(parent, 0);
+
+        $("#"+nav).fadeIn();    
+
+    } else {
+        $(".navbox").hide();
+        $("#title-divider").hide();
+        $("#subTitle").hide();
+        $("#back").hide();
+        $("#"+nav).fadeIn();            
+    }
+}
+
+var loadContent = function(c)
 {
+    // console.log("content: " + c);
+    $('#main').fadeOut(10);
+    closePanel();
 
+    $('#main').load("content/"+c+".html").fadeIn(1000);
+    initNav();
 }
 
-var loadContent = function()
+var loadPDF = function()
 {
-
+    el = document.getElementById("overlay");
+    el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+    var file = $(this).attr('data-file');
 }
 
-var setNavTitle = function()
+var closeModal = function()
 {
+    el = document.getElementById("overlay");
+    el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+}
+
+var setNavTitle = function(title)
+{
+   $("#topLevelTitle").html(title);
+}
+
+var setSubTitle = function(title)
+{ 
+    $("#subTitle").html(title);      
+    $("#title-divider").fadeIn();
+    $("#subTitle").fadeIn();
+}
+
+var setBackButton = function(whereTo, isMainLevelNav)
+{   
+    if(isMainLevelNav==1){
+        $("#back").hide(); //this is the top level and won't need a back button
+    } else {
+        $('#back').attr('data-backto', whereTo);
+        $("#back").on( "click", function() {
+            loadNavigation(whereTo, "1", "");
+        });   
+
+        $("#back").fadeIn();
+    }
+ 
 
 }
 
+var loadIndex = function(){
+    // I don't love this function
+    $('#main').fadeOut(10);
+
+    $("#close").hide();
+    $("#navtitle").hide();
+
+    if($('#panel').hasClass('open')){
+        $(".navbox").fadeOut(300);
+        $('.navitem').removeClass("grey");
+        $("#panel").removeClass("open");
+        $( "#panel" ).animate({
+          width: "-=750"
+          }, 300, function() {
+            // Animation complete.
+            $('#main').load("content/index-content.html").fadeIn(500);
+            //alert("done");
+        });
+        initNav();
+    } else {
+        $('#main').fadeOut(10);
+        $('#main').load("content/index-content.html").fadeIn(500);
+    }
+}
+
+$('#logo').click(function(){  loadIndex() });
+$('#snowservices-nav').click(function(){   loadPDF()   });

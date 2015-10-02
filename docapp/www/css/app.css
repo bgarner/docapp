@@ -3,6 +3,12 @@
 @font-face { font-family: GalaxiePolarisCondensed-Bold; font-weight: bold; src: url('../fonts/GalaxiePolarisCondensed-Bold.otf'); }
 @font-face { font-family: GalaxiePolarisCondensed-Light; font-weight: bold; src: url('../fonts/GalaxiePolarisCondensed-Light.otf'); }
 
+body {
+     height:100%;
+     margin:0;
+     padding:0;
+}
+
 #stage{
     height: 100%;
     width: 100%;
@@ -34,8 +40,8 @@
         bottom: 10px;
         left: 50px;
         color: #fff;
-        font: normal 34px GalaxiePolarisCondensed-Bold;
-        line-height: 32px;
+        font: normal 24px GalaxiePolarisCondensed-Bold;
+        line-height: 24px;
         padding: 5px 0px;
         width: 550px;
         z-index: 100;
@@ -43,15 +49,26 @@
 
     #title-divider{
         display: none;
-        font: normal 32px GalaxiePolarisCondensed-Light;
+        font: normal 24px GalaxiePolarisCondensed-Light;
+        padding: 0px 10px;
+        color: #666;
+    }
+
+    .title-divider-sm{
+        display: inline;
+        font: normal 24px GalaxiePolarisCondensed-Light;
         padding: 0px 10px;
         color: #666;
     }
 
     #subTitle{
         display: none;
-        font: normal 32px GalaxiePolarisCondensed-Light;
+        font: normal 24px GalaxiePolarisCondensed-Light;
         text-transform: uppercase;
+    }
+
+    #back{
+        display: none;
     }
 
     #nav span.grey{
@@ -76,7 +93,7 @@
             left: 650px;
         }
 
-        #nav-blackfriday, #nav-how, #nav-training, #subnav-blackfridayvisual{ display: none; }
+        #nav-blackfriday, #nav-how, #nav-training, #subnav-blackfridayvisual, .navbox{ display: none; }
 
         .navbox{
             position: relative;
@@ -376,3 +393,30 @@
     }
 
     .close:hover { background: #00d9ff; }
+
+
+    #overlay {
+     visibility: hidden;
+     position: absolute;
+     left: 0px;
+     top: 0px;
+     width:100%;
+     height:100%;
+     text-align:center;
+     z-index: 1000;
+    
+
+    }
+
+    #overlay div {
+    position: relative;
+    top: 10px;
+    left: 20px;
+     width: 1240px;
+     height: 780px;
+     background-color: #fff;
+     
+}
+
+
+
