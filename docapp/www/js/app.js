@@ -55,7 +55,7 @@ var initSubNav = function()
         var title = $(this).attr('data-title');
         var parent = $(this).attr('data-parent');
      //   console.log("attempting to load subnav: " + nav);
-        loadNavigation(nav, "1", parent);
+        loadNavigation(nav);
      });   
 }
 
@@ -96,7 +96,7 @@ var openPanel = function(id, nav, title)
         $("#close").fadeIn();
         $("#navtitle").fadeIn();
         setNavTitle(title);
-        loadNavigation(nav, 0, "");
+        loadNavigation(nav);
     });
 }
 
@@ -118,35 +118,46 @@ var closePanel = function()
    // $("#navtitle").hide();
 }
 
-var loadNavigation = function(nav, isSubNav, parent)
+var loadNavigation = function(nav)
 { 
-    //console.log("loadNaviation called with: nav:"+ nav +" isSubNav:"+ isSubNav +" parent:"+ parent);
-    if(isSubNav ==1){
-        // console.log("loading SUB nav: "+ nav);
-        $(".navbox").hide();
-        // $("#title-divider").hide();
-        var subtitle = $("#"+nav).attr('data-title');
+      
+    $("#subTitle").html(""); //always empty the subtitle before filling it.
+    $(".navbox").hide();
+    $("#title-divider").hide();
+    $("#subTitle").hide();
+    $("#back").hide();        
 
-        console.log("nav:"+nav);
-        console.log("subTitle:"+subtitle);
-        console.log("parent:"+parent);
-        console.log("----------------------------------");
+    var parent = $("#"+nav).attr('data-parent');
+    var subtitle = $("#"+nav).attr('data-subfoldertitle');
 
-        $("#subTitle").html(subtitle);      
-        $("#title-divider").fadeIn();
-        $("#subTitle").fadeIn();
-        
-        setBackButton(parent, 0);
+    console.log("nav:"+nav);
+    console.log("subTitle:"+subtitle);
+    console.log("parent:"+parent);
+    console.log("----------------------------------");
 
-        $("#"+nav).fadeIn();    
-
-    } else {
+    if(!subtitle || subtitle  === 'undefined'){
+        //this is a top level item
+        $("#title-divider").hide();
         $(".navbox").hide();
         $("#title-divider").hide();
         $("#subTitle").hide();
-        $("#back").hide();
-        $("#"+nav).fadeIn();            
+        $("#back").hide(); 
+
+    } else {
+
+        $("#subTitle").html(subtitle);      
+        $("#subTitle").fadeIn();
+        $("#title-divider").fadeIn();
+
+        if(parent || typeof parent != 'undefined'){
+            setBackButton(parent); 
+            $("#back").fadeIn(); 
+        } 
+
     }
+
+    $("#"+nav).fadeIn();    
+  
 }
 
 var loadContent = function(c)
@@ -175,27 +186,11 @@ var setNavTitle = function(title)
    $("#topLevelTitle").html(title);
 }
 
-// var setSubTitle = function(title)
-// { 
-//     $("#subTitle").html(title);      
-//     $("#title-divider").fadeIn();
-//     $("#subTitle").fadeIn();
-// }
-
-var setBackButton = function(whereTo, isMainLevelNav)
+var setBackButton = function(whereTo)
 {   
-    if(isMainLevelNav==1){
-        $("#back").hide(); //this is the top level and won't need a back button
-    } else {
-        $('#back').attr('data-backto', whereTo);
-        $("#back").on( "click", function() {
-            loadNavigation(whereTo, "1", "");
-        });   
-
-        $("#back").fadeIn();
-    }
- 
-
+    $("#back").on( "click", function() {
+        loadNavigation(whereTo);
+    });   
 }
 
 var loadIndex = function(){
