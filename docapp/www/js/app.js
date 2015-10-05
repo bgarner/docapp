@@ -34,6 +34,7 @@ $( document ).ready(function() {
     initNav();
     initSubNav();
     initClose();
+    initFileOpen();
 });
 
 var initNav = function()
@@ -63,6 +64,19 @@ var initClose = function()
     $('#close').click(function(){
         closePanel();
         initNav();
+    });
+}
+
+var initFileOpen = function()
+{
+    $( ".openfile" ).on( "click", function() {
+        el = document.getElementById("overlay");
+        el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+        var file = $(this).attr('data-file');
+        console.log(file);
+
+        //$("#overlay div embed").attr("src","/content/pdf"+file);
+      //  $('#overlay div').load("/content/pdf/"+file).fadeIn(500);
     });
 }
 
@@ -111,12 +125,17 @@ var loadNavigation = function(nav, isSubNav, parent)
         // console.log("loading SUB nav: "+ nav);
         $(".navbox").hide();
         // $("#title-divider").hide();
-        var title = $("#".nav).attr('data-title');
+        var subtitle = $("#"+nav).attr('data-title');
 
-        console.log("title:" + title +" from: " + nav);
+        console.log("nav:"+nav);
+        console.log("subTitle:"+subtitle);
+        console.log("parent:"+parent);
+        console.log("----------------------------------");
 
-        console.log("nav: #" + nav);
-        setSubTitle(title);
+        $("#subTitle").html(subtitle);      
+        $("#title-divider").fadeIn();
+        $("#subTitle").fadeIn();
+        
         setBackButton(parent, 0);
 
         $("#"+nav).fadeIn();    
@@ -142,9 +161,7 @@ var loadContent = function(c)
 
 var loadPDF = function()
 {
-    el = document.getElementById("overlay");
-    el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
-    var file = $(this).attr('data-file');
+
 }
 
 var closeModal = function()
@@ -158,12 +175,12 @@ var setNavTitle = function(title)
    $("#topLevelTitle").html(title);
 }
 
-var setSubTitle = function(title)
-{ 
-    $("#subTitle").html(title);      
-    $("#title-divider").fadeIn();
-    $("#subTitle").fadeIn();
-}
+// var setSubTitle = function(title)
+// { 
+//     $("#subTitle").html(title);      
+//     $("#title-divider").fadeIn();
+//     $("#subTitle").fadeIn();
+// }
 
 var setBackButton = function(whereTo, isMainLevelNav)
 {   
@@ -207,4 +224,4 @@ var loadIndex = function(){
 }
 
 $('#logo').click(function(){  loadIndex() });
-$('#snowservices-nav').click(function(){   loadPDF()   });
+// $('#snowservices-nav').click(function(){   loadPDF()   });
