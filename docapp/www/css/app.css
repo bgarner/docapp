@@ -113,12 +113,13 @@ body {
         .selectbox{
             margin: 0px 30px 30px 50px;
             display: block;
-            height: 234px;
+            height: 125px;
             width: 236px;
-            background: transparent url('../img/select-box.png') top left no-repeat;
+            background: transparent url('../img/select-box-sm.png') top left no-repeat;
             float: left;
-
+            
         }
+
             .selectbox-content{}
             .selectbox-content img{
                 position: relative;
@@ -150,7 +151,7 @@ body {
         left: -27px;
     }
 
-
+#listViewId{ display: none;}
 
 #main{
     /*background-color: blue;*/

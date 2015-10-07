@@ -35,6 +35,7 @@ $( document ).ready(function() {
     initSubNav();
     initClose();
     initFileOpen();
+    initListViewItems();
 });
 
 var initNav = function()
@@ -51,7 +52,7 @@ var initNav = function()
 var initSubNav = function()
 {
     $( ".hasSubNav" ).on( "click", function() { 
-        var nav = $(this).attr('data-subnavid');
+        var nav = $(this).attr('data-subnav');
         var title = $(this).attr('data-title');
         var parent = $(this).attr('data-parent');
      //   console.log("attempting to load subnav: " + nav);
@@ -80,10 +81,16 @@ var initFileOpen = function()
     });
 }
 
+var initListViewItems = function()
+{
+    $('.openList').click(function(){ 
+        var item = $(this).attr('data-loadData');
+        loadContent(item);
+    });
+}
+
 var openPanel = function(id, nav, title)
 {
-    // console.log("opening panel with: " + id);
-    // console.log("attempting to load nav: " + nav);
     $("#panel").addClass("open");
     $("#arrow").hide();
 
@@ -120,23 +127,18 @@ var closePanel = function()
 
 var loadNavigation = function(nav)
 { 
-      
     $("#subTitle").html(""); //always empty the subtitle before filling it.
-    $(".navbox").hide();
-    $("#title-divider").hide();
-    $("#subTitle").hide();
-    $("#back").hide();        
+    $(".navbox").hide(); //hide all of the navboxes
+    $("#title-divider").hide(); 
+    $("#subTitle").hide(); //even though this is set to empty, we will need to fade it in later
+    $("#back").hide();         
 
     var parent = $("#"+nav).attr('data-parent');
     var subtitle = $("#"+nav).attr('data-subfoldertitle');
+    var isTopLevel = $("#"+nav).attr('data-isTopLevel');
+    
+    if(isTopLevel == "true"){
 
-    console.log("nav:"+nav);
-    console.log("subTitle:"+subtitle);
-    console.log("parent:"+parent);
-    console.log("----------------------------------");
-
-    if(!subtitle || subtitle  === 'undefined'){
-        //this is a top level item
         $("#title-divider").hide();
         $(".navbox").hide();
         $("#title-divider").hide();
@@ -153,20 +155,19 @@ var loadNavigation = function(nav)
             setBackButton(parent); 
             $("#back").fadeIn(); 
         } 
-
     }
 
-    $("#"+nav).fadeIn();    
-  
+    $("#"+nav).fadeIn();      
 }
 
 var loadContent = function(c)
 {
-    // console.log("content: " + c);
     $('#main').fadeOut(10);
     closePanel();
 
-    $('#main').load("content/"+c+".html").fadeIn(1000);
+    $('#main').load("content/list.html").fadeIn(1000);
+    //set the hidden element to the item id
+    $("#listViewId").html(c);   
     initNav();
 }
 
@@ -188,6 +189,7 @@ var setNavTitle = function(title)
 
 var setBackButton = function(whereTo)
 {   
+    $("#back").unbind(); //lets take all other actions off the back button
     $("#back").on( "click", function() {
         loadNavigation(whereTo);
     });   
@@ -195,27 +197,13 @@ var setBackButton = function(whereTo)
 
 var loadIndex = function(){
     // I don't love this function
-    $('#main').fadeOut(10);
-
-    $("#close").hide();
-    $("#navtitle").hide();
-
     if($('#panel').hasClass('open')){
-        $(".navbox").fadeOut(300);
-        $('.navitem').removeClass("grey");
-        $("#panel").removeClass("open");
-        $( "#panel" ).animate({
-          width: "-=750"
-          }, 300, function() {
-            // Animation complete.
-            $('#main').load("content/index-content.html").fadeIn(500);
-            //alert("done");
-        });
-        initNav();
-    } else {
-        $('#main').fadeOut(10);
-        $('#main').load("content/index-content.html").fadeIn(500);
-    }
+        closePanel();
+    } 
+
+    $('#main').fadeOut(10);
+    $('#main').load("content/index-content.html").fadeIn(500);
+    initNav();    
 }
 
 $('#logo').click(function(){  loadIndex() });
