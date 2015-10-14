@@ -96,6 +96,7 @@ var openPanel = function(id, nav, title)
 
     $('.navitem').addClass("grey");
     $('#'+id).removeClass("grey");
+    $('#'+id).addClass("selectedItem");
 
     $( "#panel" ).animate({
       width: "+=750"
@@ -112,6 +113,7 @@ var closePanel = function()
     $("#navtitle").hide();
     $(".navbox").hide();
     $('.navitem').removeClass("grey");
+    $('.navitem').removeClass("selectedItem");
 
     $( "#panel" ).animate({
       width: "-=750"
