@@ -23,11 +23,14 @@ body {
     float: left;
     z-index: 99 !important;
     border-bottom: 5px solid #e51b2d;
-    font: normal 22px  GalaxiePolarisCondensed-Book;
+    font: normal 22px GalaxiePolarisCondensed-Book;
     line-height: 22px;
     text-align: center;
     margin: 0;
 }
+    #logo{
+        padding-bottom: 20px;
+    }
 
     #nav span.navitem, .navitem-home{
         color: #fff; text-decoration: none; display: block;
@@ -67,9 +70,7 @@ body {
         text-transform: uppercase;
     }
 
-    #back{
-        display: none;
-    }
+
 
     #nav span.grey{
         color: #666666;
@@ -80,12 +81,15 @@ body {
         height:795px;
         position:relative;
         width: 0px;
-        background-color: #333333;
+        background-color: #222;
         /*background-color: green;*/
         border-bottom: 5px solid #e51b2d;
         z-index: 100;
     }
 
+    .selectedItem{
+        background-color: #222;
+    }
         #close{
             display: none;
             position: relative;
@@ -115,7 +119,7 @@ body {
             display: block;
             height: 125px;
             width: 236px;
-            background: transparent url('../img/select-box-sm.png') top left no-repeat;
+            background: transparent url('../img/select-box-sm-trans.png') top left no-repeat;
             float: left;
             
         }
@@ -395,6 +399,19 @@ body {
 
     .close:hover { background: #00d9ff; }
 
+    #back{
+        display: none;
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        color: #fff;
+        text-transform: uppercase;
+        font: normal 22px GalaxiePolarisCondensed-Light;
+    }
+
+        #back img{
+            position: relative; top: 6px; right: 5px;
+        }
 
     #overlay {
      visibility: hidden;
