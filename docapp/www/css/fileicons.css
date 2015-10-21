@@ -1,0 +1,108 @@
+/**
+ * Sprites of common file type in 16x16px.
+ * 
+ * Credits:
+ *   http://splitbrain.org/projects/file_icons
+ *   http://spritegen.website-performance.org
+ *  
+ * 
+ * Don't forget to add a background rule to reference the sprite image. Something like this, for example:
+ * 
+ * #container li {
+ *    background: url(fileicons.png) no-repeat top left;
+ * }
+ * 
+ * or a class:
+ * 
+ * .fileicons {background:url(fileicons.png) no-repeat top left;}
+ * 
+*/
+
+.fileicons {background:url('../img/fileicons.png') no-repeat top left; height: 16px; width: 16px; margin-right: 5px; float: left;}
+.filetitle{ float: left; }
+.file-7z{ background-position: 0 0;  } 
+.file-ai{ background-position: 0 -20px;  } 
+.file-aiff{ background-position: 0 -40px;  } 
+.file-asc{ background-position: 0 -60px;  } 
+.file-audio{ background-position: 0 -80px;  } 
+.file-bin{ background-position: 0 -100px;  } 
+.file-bz2{ background-position: 0 -120px;  } 
+.file-c{ background-position: 0 -140px;  } 
+.file-cfc{ background-position: 0 -160px;  } 
+.file-cfm{ background-position: 0 -180px;  } 
+.file-chm{ background-position: 0 -200px;  } 
+.file-class{ background-position: 0 -220px;  } 
+.file-conf{ background-position: 0 -240px;  } 
+.file-cpp{ background-position: 0 -260px;  } 
+.file-cs{ background-position: 0 -280px;  } 
+.file-css{ background-position: 0 -300px;  } 
+.file-csv{ background-position: 0 -320px;  } 
+.file-deb{ background-position: 0 -340px;  } 
+.file-divx{ background-position: 0 -360px;  } 
+.file-doc{ background-position: 0 -380px;  } 
+.file-dot{ background-position: 0 -400px;  } 
+.file-eml{ background-position: 0 -420px;  } 
+.file-enc{ background-position: 0 -440px;  } 
+.file-file{ background-position: 0 -460px;  } 
+.file-gif{ background-position: 0 -480px;  } 
+.file-gz{ background-position: 0 -500px;  } 
+.file-hlp{ background-position: 0 -520px;  } 
+.file-htm{ background-position: 0 -540px;  } 
+.file-html{ background-position: 0 -560px;  } 
+.file-image{ background-position: 0 -580px;  } 
+.file-iso{ background-position: 0 -600px;  } 
+.file-jar{ background-position: 0 -620px;  } 
+.file-java{ background-position: 0 -640px;  } 
+.file-jpeg{ background-position: 0 -660px;  } 
+.file-jpg{ background-position: 0 -680px;  } 
+.file-js{ background-position: 0 -700px;  } 
+.file-lua{ background-position: 0 -720px;  } 
+.file-m{ background-position: 0 -740px;  } 
+.file-mm{ background-position: 0 -760px;  } 
+.file-mov{ background-position: 0 -780px;  } 
+.file-mp3{ background-position: 0 -800px;  } 
+.file-mpg{ background-position: 0 -820px;  } 
+.file-odc{ background-position: 0 -840px;  } 
+.file-odf{ background-position: 0 -860px;  } 
+.file-odg{ background-position: 0 -880px;  } 
+.file-odi{ background-position: 0 -900px;  } 
+.file-odp{ background-position: 0 -920px;  } 
+.file-ods{ background-position: 0 -940px;  } 
+.file-odt{ background-position: 0 -960px;  } 
+.file-ogg{ background-position: 0 -980px;  } 
+.file-pdf{ background-position: 0 -1000px;  } 
+.file-pgp{ background-position: 0 -1020px;  } 
+.file-php{ background-position: 0 -1040px;  } 
+.file-pl{ background-position: 0 -1060px;  } 
+.file-png{ background-position: 0 -1080px;  } 
+.file-ppt{ background-position: 0 -1100px;  } 
+.file-ps{ background-position: 0 -1120px;  } 
+.file-py{ background-position: 0 -1140px;  } 
+.file-ram{ background-position: 0 -1160px;  } 
+.file-rar{ background-position: 0 -1180px;  } 
+.file-rb{ background-position: 0 -1200px;  } 
+.file-rm{ background-position: 0 -1220px;  } 
+.file-rpm{ background-position: 0 -1240px;  } 
+.file-rtf{ background-position: 0 -1260px;  } 
+.file-sig{ background-position: 0 -1280px;  } 
+.file-sql{ background-position: 0 -1300px;  } 
+.file-swf{ background-position: 0 -1320px;  } 
+.file-sxc{ background-position: 0 -1340px;  } 
+.file-sxd{ background-position: 0 -1360px;  } 
+.file-sxi{ background-position: 0 -1380px;  } 
+.file-sxw{ background-position: 0 -1400px;  } 
+.file-tar{ background-position: 0 -1420px;  } 
+.file-tex{ background-position: 0 -1440px;  } 
+.file-tgz{ background-position: 0 -1460px;  } 
+.file-txt{ background-position: 0 -1480px;  } 
+.file-vcf{ background-position: 0 -1500px;  } 
+.file-video{ background-position: 0 -1520px;  } 
+.file-vsd{ background-position: 0 -1540px;  } 
+.file-wav{ background-position: 0 -1560px;  } 
+.file-wma{ background-position: 0 -1580px;  } 
+.file-wmv{ background-position: 0 -1600px;  } 
+.file-xls{ background-position: 0 -1620px;  } 
+.file-xml{ background-position: 0 -1640px;  } 
+.file-xpi{ background-position: 0 -1660px;  } 
+.file-xvid{ background-position: 0 -1680px;  } 
+.file-zip{ background-position: 0 -1700px;  } 
