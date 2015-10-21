@@ -96,6 +96,7 @@ var openPanel = function(id, nav, title)
 
     $('.navitem').addClass("grey");
     $('#'+id).removeClass("grey");
+    $('#'+id).addClass("selectedItem");
 
     $( "#panel" ).animate({
       width: "+=750"
@@ -112,6 +113,7 @@ var closePanel = function()
     $("#navtitle").hide();
     $(".navbox").hide();
     $('.navitem').removeClass("grey");
+    $('.navitem').removeClass("selectedItem");
 
     $( "#panel" ).animate({
       width: "-=750"
@@ -197,9 +199,22 @@ var setBackButton = function(whereTo)
 
 var loadIndex = function(){
     // I don't love this function
-    if($('#panel').hasClass('open')){
-        closePanel();
-    } 
+    console.log("home button clicked");
+    $("#navtitle").hide();
+    $("#close").hide();
+    $(".navbox").hide();
+    $('.navitem').removeClass("grey");
+    $("#back").hide();
+
+    $("#panel").removeClass("open");
+    $('#panel').css({"width":"0"});
+
+    var w = $('#panel').width();
+    console.log("width: " + w);
+
+    if( $('#main>#arrow') ) {
+        $("#arrow").show();
+    }
 
     $('#main').fadeOut(10);
     $('#main').load("content/index-content.html").fadeIn(500);

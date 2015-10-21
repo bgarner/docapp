@@ -9,9 +9,9 @@
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         <link rel="stylesheet" type="text/css" href="css/app.css" />
         <title>FGL Service Shop App</title>
-
-       
-
+        <style type="text/css">
+            div[role=toolbar]{ display: none; }
+        </style>
     </head>
 
                 <div id="overlay">
@@ -25,25 +25,26 @@
     <body id="home">
 
             <div id="nav">
-                <img id="logo" src="img/logo.png" style="padding-bottom: 150px;" />
+                <img id="logo" src="img/logo.png" style="" />
 
-                <img src="img/divider.gif" />
+                <!-- <img src="img/divider.gif" /> -->
                     <span class="navitem" id="toplevel-blackfriday" data-nav="blackfriday" data-title="BLACK FRIDAY 2015">BLACK FRIDAY</span>        
                     <span class="navitem" id="how" data-nav="holiday" data-title="HOLIDAY 2015">HOLIDAY 2015</span>
-                <img src="img/divider.gif" />
+                <!-- <img src="img/divider.gif" /> -->
 
             </div>
 
             <div id="panel">
 
-                <img src="img/close.png" id="close" />
-                <div id="navtitle"><span id="topLevelTitle"></span> <span id="title-divider">//</span> <span id="subTitle"></span> <span id="back" data-backto="">Back</span></div>
+                <img id="close" src="img/close.png" />
+                <span id="back" data-backto=""><img src="img/back.png" /> Back </span>
+                <div id="navtitle"><span id="topLevelTitle"></span> <span id="title-divider">//</span> <span id="subTitle"></span></div>
 
 
                 <!-- ///////////// BLACK FRIDAY //////////////////-->
                 <div id="blackfriday" class="navbox" data-isTopLevel="true">
 
-                <a href="#" onclick="window.open('content/pdf/WK-34-FY16-PB.pdf', '_blank');">
+                <a href="#" onclick="window.open('http://opsportal.storeapps.fglsports.dmz/viewer/web/viewer.html?file=/resources/content/qmag/QmagSCFY16Q3_FINALweb2.pdf', '_blank', 'location=no');">
                     <div class="selectbox" id="snowservices-nav">
                         <div class="selectbox-content">
                             <img src="img/snowsports-nav.jpg" />
@@ -154,7 +155,7 @@
 
             <div id="main">
                 <img id="arrow" src="img/arrow.png" />
-                <img src="img/splash.jpg" id="splash" />
+                <img src="img/splashdog.jpg" id="splash" />
             </div>
 
 
@@ -169,16 +170,16 @@
         <script type="text/javascript">
             app.initialize();
        
-            document.addEventListener("deviceready", onDeviceReady, false);
+            // document.addEventListener("deviceready", onDeviceReady, false);
 
-            function onDeviceReady() {
-                // Now safe to use the PhoneGap API
-                console.log('Javascript OK');
+            // function onDeviceReady() {
+            //     // Now safe to use the PhoneGap API
+            //     console.log('Javascript OK');
 
-                window.onerror = function(message, url, lineNumber) {
-                   console.log("Error: "+message+" in "+url+" at line "+lineNumber);
-                }
-            }
+            //     window.onerror = function(message, url, lineNumber) {
+            //        console.log("Error: "+message+" in "+url+" at line "+lineNumber);
+            //     }
+            // }
 
         </script>
     </body>
