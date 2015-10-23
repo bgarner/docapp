@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 var item = $("#listViewId").html();
 $(".listTitle").html(item);	
 
@@ -36,8 +35,3 @@ $.getJSON('http://localhost:8000/api/v1/banner/1/navigation', function(json) {
 
 
 
-=======
-
-var item = $("#listViewId").html();
-$(".listTitle").html(item);
->>>>>>> 91c39c8a5f395a595810c78e21d3caf9861c379c
