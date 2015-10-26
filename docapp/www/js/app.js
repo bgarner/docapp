@@ -1,3 +1,7 @@
+const API_DOMAIN = "http://localhost:8000";
+const API_VERSION = "v1";
+const BANNER_ID = 1;
+
 var app = {
     // Application Constructor
     initialize: function() {
@@ -31,12 +35,15 @@ var app = {
 };
 
 $( document ).ready(function() {
+    loadJSONNavigation();  
     initNav();
     initSubNav();
     initClose();
     // initFileOpen();
     initListViewItems();
 });
+
+$('#logo').click(function(){  loadIndex() });
 
 var initNav = function()
 {
@@ -221,5 +228,102 @@ var loadIndex = function(){
     initNav();    
 }
 
-$('#logo').click(function(){  loadIndex() });
+
+
+
+var loadJSONNavigation = function()
+{
+
+    var jqxhr = $.getJSON( API_DOMAIN + "/api/"+ API_VERSION +"/banner/"+ BANNER_ID +"/navigation", function(json) {
+     
+        var i=0;
+            $.each(json, function(index, element) {
+                inspectNode(element, json);
+                i++;
+            });
+        })
+
+        .done(function(){
+        console.log("json loaded... init the nav");
+        initNav();
+    });
+
+}
+
+
+
+var getNodeDetail = function()
+{
+
+} 
+
+var inspectNode = function(node, json){
+
+    if(node.is_child == 0){ //this is a parent node
+        constructNavElement("topLevel", node.label, node.id);  
+    }
+        //check for children
+        
+        if(node.children){
+
+            var children = node.children;
+
+            if( children.length > 0 ){ 
+                
+                 $.each(children, function( index, child ){
+
+                    var id = child.child_id;
+                    var parent_id = json[id].parent_id;
+
+                    constructNavElement("child", json[id].label, id, json[parent_id].label, parent_id );
+
+                    //children of children?
+                    inspectNode(child, json);
+                 });
+            } 
+        }
+        if(node.weeks){
+            var weeks = node.weeks;
+
+            $.each(weeks, function(index, w){
+                var id = w.week_id;
+                var label = w.week;
+                console.log ("has week: " + label);    
+            });
+            
+        }
+}
+
+var constructNavElement = function(nodeType, label, id, parent_label, parent_id){
+        
+
+    var html;
+    switch( nodeType ){
+        case "topLevel":
+
+            navlabel = label.replace(" ", "_");
+
+            console.log ("build a top level element.... " + label + "_" + id );
+
+            html = "<span class='navitem' id='toplevel-"+navlabel+"_"+id+"' data-nav='"+navlabel+"_"+id+"' data-title='"+label+"'>"+label+"</span>";
+            $( "#nav" ).append( html );
+
+            html = "<div id='"+navlabel+"_"+id+"' class='navbox' data-isTopLevel='true'></div>"
+            $( "#panel" ).append( html );
+
+            break;
+
+        case "child":   
+            navlabel = label.replace(" ", "_");
+            navparent_label = parent_label.replace(" ", "_");
+
+            console.log ("build a child element.... " + label + "_" + id + " parent: " + parent_label +"_"+parent_id );
+
+
+            break;
+    }
+    
+}
+
+
 // $('#snowservices-nav').click(function(){   loadPDF()   });
