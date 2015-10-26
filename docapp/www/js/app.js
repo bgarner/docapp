@@ -319,7 +319,15 @@ var constructNavElement = function(nodeType, label, id, parent_label, parent_id)
 
             console.log ("build a child element.... " + label + "_" + id + " parent: " + parent_label +"_"+parent_id );
 
+            html =        "<div class='selectbox' id='hockeyservices-nav'>"
+            html = html + "   <div class='selectbox-content'>"
+            html = html + "        <img src='img/hockey-nav.jpg' />"
+            html = html + "        <h2>"+label+"</h2>"
+            html = html + "    </div>"
+            html = html + "</div> "
 
+            target = navparent_label+"_"+parent_id ;            
+            $( "#"+target ).append( html );
             break;
     }
     
