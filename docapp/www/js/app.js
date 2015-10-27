@@ -1,6 +1,7 @@
 const API_DOMAIN = "http://localhost:8000";
 const API_VERSION = "v1";
 const BANNER_ID = 1;
+var counter = 0;
 
 var app = {
     // Application Constructor
@@ -36,11 +37,11 @@ var app = {
 
 $( document ).ready(function() {
     loadJSONNavigation();  
-    initNav();
-    initSubNav();
+    // initNav();
+    // initSubNav();
     initClose();
     // initFileOpen();
-    initListViewItems();
+    // initListViewItems();
 });
 
 $('#logo').click(function(){  loadIndex() });
@@ -91,8 +92,9 @@ var initFileOpen = function()
 var initListViewItems = function()
 {
     $('.openList').click(function(){ 
-        var item = $(this).attr('data-loadData');
-        loadContent(item);
+        var item = $(this).attr('data-loadList');
+        var title = $(this).attr('data-listTitle');
+        loadContent(title, item);
     });
 }
 
@@ -169,14 +171,16 @@ var loadNavigation = function(nav)
     $("#"+nav).fadeIn();      
 }
 
-var loadContent = function(c)
+var loadContent = function(title, id)
 {
     $('#main').fadeOut(10);
     closePanel();
 
     $('#main').load("content/list.html").fadeIn(1000);
     //set the hidden element to the item id
-    $("#listViewId").html(c);   
+    $("#listViewId").html(id);   
+    $("#listViewTitle").html(title);   
+
     initNav();
 }
 
@@ -244,44 +248,159 @@ var loadJSONNavigation = function()
         })
 
         .done(function(){
+
         console.log("json loaded... init the nav");
+
         initNav();
+        console.log("nav done!");
+
+        initSubNav();
+        console.log("sub nav done!");
+
+        initFileOpen();
+        console.log("file open done!");
+
+        initListViewItems();        
+        console.log("list view done!");
     });
 
 }
 
-
-
-var getNodeDetail = function()
+var inspectNode = function(node, json)
 {
-
-} 
-
-var inspectNode = function(node, json){
+    counter++;
+    console.log(counter);    
+    // console.log(node, children);
 
     if(node.is_child == 0){ //this is a parent node
-        constructNavElement("topLevel", node.label, node.id);  
+        console.log("//// CONSTRUCTING TOP LEVEL ITEM ////");
+        var thisLabel = node.label;
+        var thisId = node.id;
+
+        thisId = thisLabel + "-" + thisId;
+        thisId = thisId.replace(" ", "-");
+      
+        //create the root level element    
+        var html = constructNavElement("topLevel", thisLabel, thisId);  
+        //apend it to the "nav" div
+        appendToContainer("nav", html);
+        //create a sub nav container for this elements childern
+        constructSubNavContainer( thisId, "", thisLabel);
+
+        return;
     }
+
+    if(node.is_child == 1) { //this is a child item
+       // console.log(node);
+        var children = node.children;
+        var thisLabel = node.label;
+        var thisId = node.id;
+        var parent_id = node.parent_id;
+        var parent_label = json[parent_id].label;
+        var parent_label_nospace = parent_label.replace(" ", "-");
+        var thisLabel_nospace = thisLabel.replace(" ", "-");
+        var subNavContainerId = parent_label_nospace + "-" + parent_id;
+
+
+
+        if( children.length > 0 ){ 
+
+            var html = constructNavElement("child", thisLabel, thisId, parent_label, parent_id);  
+            appendToContainer( subNavContainerId, html);            
+
+            parentContainerId = subNavContainerId;  //borrow the container we built above. just renamed for clarity.
+            var thisSubNavContainerId = thisLabel_nospace + "-" + thisId;
+            constructSubNavContainer( thisSubNavContainerId, parentContainerId, thisLabel);
+
+            //check for childern of this node
+            $.each(children, function( index, child ){
+                inspectNode(child, json);
+            });
+            return;
+        }  
+
+
+        if( children.length == 0 && typeof node.weeks === "undefined") {
+            var html = createLeaf( thisLabel, thisId );
+            appendToContainer(subNavContainerId, html);
+            return;
+        }
+
+        //if( typeof node.weeks !== "undefined" ){
+        if( node.weeks ){
+            console.log("I have weeks?");
+            console.log(node);
+
+            var html = constructNavElement("child", thisLabel, thisId, parent_label, parent_id);  
+            appendToContainer( subNavContainerId, html);  
+
+            var thisLabelWeeks = node.label;
+            thisLabelWeeks = thisLabelWeeks.replace(" ", "-");
+            
+
+            var parentLabelWeeks = json[node.parent_id].label;
+            parentLabelWeeks = parentLabelWeeks.replace(" ", "-");
+
+            subNavContainerWeeksId = thisLabelWeeks + "-" + node.id;
+            //var constructSubNavContainer = function( subNavContainerId, parentLabel, thisLabel )
+            constructSubNavContainer( subNavContainerWeeksId, parentLabelWeeks, thisLabelWeeks )
+            
+
+            var weeks = node.weeks;
+            $.each(weeks, function(index, week) {
+                var html = createLeafWeeks( week.week, week.week_id );
+                appendToContainer(subNavContainerWeeksId, html);
+                return;       
+            });
+        }   
+       
+    }
+
+
         //check for children
         
-        if(node.children){
+        // if(node.children){
 
-            var children = node.children;
+        //     var children = node.children;
 
-            if( children.length > 0 ){ 
+        //     if( children.length > 0 ){ 
                 
-                 $.each(children, function( index, child ){
+        //         var thisLabel = node.label;
+        //         var thisLabel = thisLabel.replace(" ", "_");
 
-                    var id = child.child_id;
-                    var parent_id = json[id].parent_id;
+        //         if( json[node.parent_id].label ){
+                    
+        //             var parentLabel = json[node.parent_id].label;    
+        //             var parentLabel = parentLabel.replace(" ", "_");    
 
-                    constructNavElement("child", json[id].label, id, json[parent_id].label, parent_id );
+        //             // var thisLabel = json[id].label;
+        //             // var thisLabel = thisLabel.replace(" ", "_");
 
-                    //children of children?
-                    inspectNode(child, json);
-                 });
-            } 
-        }
+        //             // var subNavContainerId = parentLabel + "-" + thisLabel;  
+        //             var subNavContainerId = thisLabel + "_" + node.id;                    
+        //         } 
+                
+        //         constructSubNavContainer( subNavContainerId, json[node.parent_id].label, json[node.id].label);
+
+        //          $.each(children, function( index, child ){
+
+        //             var id = child.child_id;
+        //             var parent_id = json[id].parent_id;
+
+        //             constructNavElement("child", json[id].label, id, json[parent_id].label, parent_id, subNavContainerId ); 
+
+        //                //children of children?
+        //             inspectNode(child, json);
+        //          });
+
+        //     } else {
+        //         var id = node.id;
+        //         var parent_id = json[id].parent_id;
+        //         subNavContainerId ="later";        
+
+        //         constructNavElement("leaf", node.label, id, json[parent_id].label, parent_id, subNavContainerId ); 
+        //     } 
+        // }
         if(node.weeks){
             var weeks = node.weeks;
 
@@ -294,44 +413,84 @@ var inspectNode = function(node, json){
         }
 }
 
-var constructNavElement = function(nodeType, label, id, parent_label, parent_id){
-        
+var constructSubNavContainer = function( subNavContainerId, parentLabel, thisLabel )
+{
+    var css = 'background: #222; color: #bada55; padding: 5px 2px;';
+    console.log ("%c%s", css, "constructSubNavContainer ==> subNavContainerId: " + subNavContainerId +", parentLabel: " + parentLabel + " thisLabel: "+ thisLabel );
+    var html;
+    html = "<div id='"+subNavContainerId+"' data-subfoldertitle='"+thisLabel+"' data-parent='"+parentLabel+"' class='navbox'></div>";
+    $( "#panel" ).append( html );   
+}
+
+var appendToContainer = function( container, element ) //container MUST be an ID
+{   
+    $( "#"+container).append( element );
+    console.log("New nav item appended to " + container);
+}
+
+var constructNavElement = function(nodeType, label, id, parent_label, parent_id)
+{
+    var css = 'background: #fff; color: #c00; border-bottom: 2px solid lime;';    
 
     var html;
     switch( nodeType ){
         case "topLevel":
+            console.log ("%c%s", css, "constructNavElement ==> nodeType: " + nodeType +", label: " + label + " id: "+ id + " parent_label: " + parent_label + " parent_id: " +parent_id );
 
-            navlabel = label.replace(" ", "_");
+            html = "<span class='navitem' id='toplevel-"+id+"' data-nav='"+id+"' data-title='"+label+"'>"+label+"</span>";
 
-            console.log ("build a top level element.... " + label + "_" + id );
-
-            html = "<span class='navitem' id='toplevel-"+navlabel+"_"+id+"' data-nav='"+navlabel+"_"+id+"' data-title='"+label+"'>"+label+"</span>";
-            $( "#nav" ).append( html );
-
-            html = "<div id='"+navlabel+"_"+id+"' class='navbox' data-isTopLevel='true'></div>"
-            $( "#panel" ).append( html );
-
+            return html;
             break;
 
         case "child":   
-            navlabel = label.replace(" ", "_");
-            navparent_label = parent_label.replace(" ", "_");
+            console.log ("%c%s", css, "constructNavElement ==> nodeType: " + nodeType +", label: " + label + " id: "+ id + " parent_label: " + parent_label + " parent_id: " +parent_id );
+            var navlabel = label.replace(" ", "-");
+            var navparent_label = parent_label.replace(" ", "-");
 
-            console.log ("build a child element.... " + label + "_" + id + " parent: " + parent_label +"_"+parent_id );
-
-            html =        "<div class='selectbox' id='hockeyservices-nav'>"
+            html =        "<div class='selectbox hasSubNav' id='' data-parent='"+navparent_label+"-"+parent_id+"' data-subnav='"+navlabel+"-"+id+"'>"
             html = html + "   <div class='selectbox-content'>"
-            html = html + "        <img src='img/hockey-nav.jpg' />"
+            html = html + "        <img src='img/bikes-nav.jpg' />"
             html = html + "        <h2>"+label+"</h2>"
             html = html + "    </div>"
             html = html + "</div> "
 
-            target = navparent_label+"_"+parent_id ;            
-            $( "#"+target ).append( html );
+            return html; 
             break;
+
     }
-    
 }
+
+var createLeaf =  function( title, id )
+{
+    console.log("making a leaf: " + title +", " +id);    
+    var html; 
+    html =        "<div class='selectbox openList' data-listTitle='" + title + "' data-loadList='"+ id +"' style='border: thick solid green;'>"
+    html = html + "    <div class='selectbox-content'>"
+    html = html + "        <img src='img/snowsports-nav.jpg' />"
+    html = html + "        <h2>" + title + "</h2>"
+    html = html + "    </div>"
+    html = html + "</div>"    
+
+    return html;
+
+}
+
+var createLeafWeeks =  function( title, id )
+{
+    console.log("making a leaf: " + title +", " +id);    
+    var html; 
+    html =        "<div class='selectbox openList' data-listTitle='" + title + "' data-loadList='"+ id +"' style='border: thick solid red;'>"
+    html = html + "    <div class='selectbox-content'>"
+    html = html + "        <img src='img/snowsports-nav.jpg' />"
+    html = html + "        <h2>" + title + "</h2>"
+    html = html + "    </div>"
+    html = html + "</div>"    
+
+    return html;
+
+}
+
+
 
 
 // $('#snowservices-nav').click(function(){   loadPDF()   });
