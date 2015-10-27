@@ -1,7 +1,7 @@
 const API_DOMAIN = "http://localhost:8000";
 const API_VERSION = "v1";
 const BANNER_ID = 1;
-var counter = 0;
+
 
 var app = {
     // Application Constructor
@@ -232,9 +232,6 @@ var loadIndex = function(){
     initNav();    
 }
 
-
-
-
 var loadJSONNavigation = function()
 {
 
@@ -268,10 +265,6 @@ var loadJSONNavigation = function()
 
 var inspectNode = function(node, json)
 {
-    counter++;
-    console.log(counter);    
-    // console.log(node, children);
-
     if(node.is_child == 0){ //this is a parent node
         console.log("//// CONSTRUCTING TOP LEVEL ITEM ////");
         var thisLabel = node.label;
@@ -300,8 +293,6 @@ var inspectNode = function(node, json)
         var parent_label_nospace = parent_label.replace(" ", "-");
         var thisLabel_nospace = thisLabel.replace(" ", "-");
         var subNavContainerId = parent_label_nospace + "-" + parent_id;
-
-
 
         if( children.length > 0 ){ 
 
@@ -352,65 +343,8 @@ var inspectNode = function(node, json)
                 appendToContainer(subNavContainerWeeksId, html);
                 return;       
             });
-        }   
-       
+        }     
     }
-
-
-        //check for children
-        
-        // if(node.children){
-
-        //     var children = node.children;
-
-        //     if( children.length > 0 ){ 
-                
-        //         var thisLabel = node.label;
-        //         var thisLabel = thisLabel.replace(" ", "_");
-
-        //         if( json[node.parent_id].label ){
-                    
-        //             var parentLabel = json[node.parent_id].label;    
-        //             var parentLabel = parentLabel.replace(" ", "_");    
-
-        //             // var thisLabel = json[id].label;
-        //             // var thisLabel = thisLabel.replace(" ", "_");
-
-        //             // var subNavContainerId = parentLabel + "-" + thisLabel;  
-        //             var subNavContainerId = thisLabel + "_" + node.id;                    
-        //         } 
-                
-        //         constructSubNavContainer( subNavContainerId, json[node.parent_id].label, json[node.id].label);
-
-        //          $.each(children, function( index, child ){
-
-        //             var id = child.child_id;
-        //             var parent_id = json[id].parent_id;
-
-        //             constructNavElement("child", json[id].label, id, json[parent_id].label, parent_id, subNavContainerId ); 
-
-        //                //children of children?
-        //             inspectNode(child, json);
-        //          });
-
-        //     } else {
-        //         var id = node.id;
-        //         var parent_id = json[id].parent_id;
-        //         subNavContainerId ="later";        
-
-        //         constructNavElement("leaf", node.label, id, json[parent_id].label, parent_id, subNavContainerId ); 
-        //     } 
-        // }
-        if(node.weeks){
-            var weeks = node.weeks;
-
-            $.each(weeks, function(index, w){
-                var id = w.week_id;
-                var label = w.week;
-                console.log ("has week: " + label);    
-            });
-            
-        }
 }
 
 var constructSubNavContainer = function( subNavContainerId, parentLabel, thisLabel )
@@ -456,7 +390,6 @@ var constructNavElement = function(nodeType, label, id, parent_label, parent_id)
 
             return html; 
             break;
-
     }
 }
 
@@ -489,8 +422,3 @@ var createLeafWeeks =  function( title, id )
     return html;
 
 }
-
-
-
-
-// $('#snowservices-nav').click(function(){   loadPDF()   });
