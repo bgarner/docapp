@@ -304,7 +304,7 @@ var inspectNode = function(node, json)
             
             var weeks = node.weeks;
             $.each(weeks, function(index, week) {
-                var html = createLeafWeeks( week.week, week.week_id );
+                var html = createLeaf( week.week, week.week_id );
                 appendToContainer(subNavContainerWeeksId, html);
                 return;       
             });
@@ -352,21 +352,7 @@ var constructNavElement = function(nodeType, label, id, parent_label, parent_id)
 var createLeaf =  function( title, id )
 {
     var html; 
-    html =        "<div class='selectbox openList' data-listTitle='" + title + "' data-loadList='"+ id +"' style='border: thick solid green;'>"
-    html = html + "    <div class='selectbox-content'>"
-    html = html + "        <img src='img/snowsports-nav.jpg' />"
-    html = html + "        <h2>" + title + "</h2>"
-    html = html + "    </div>"
-    html = html + "</div>"    
-
-    return html;
-
-}
-
-var createLeafWeeks =  function( title, id )
-{
-    var html; 
-    html =        "<div class='selectbox openList' data-listTitle='" + title + "' data-loadList='"+ id +"' style='border: thick solid red;'>"
+    html =        "<div class='selectbox openList' data-listTitle='" + title + "' data-loadList='"+ id +"'>"
     html = html + "    <div class='selectbox-content'>"
     html = html + "        <img src='img/snowsports-nav.jpg' />"
     html = html + "        <h2>" + title + "</h2>"
