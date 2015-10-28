@@ -36,7 +36,8 @@ var app = {
 };
 
 $( document ).ready(function() {
-    loadJSONNavigation();  
+    loadJSONNavigation();
+    //initRecentDocumentsButton();  
     initClose();
 });
 
@@ -124,6 +125,7 @@ var closePanel = function()
         }
     });
     $("#close").hide();
+    $("#back").hide(); 
    // $("#navtitle").hide();
 }
 
@@ -385,4 +387,22 @@ var loadListView = function(title, id){
         .done(function(){
 
     });    
+}
+
+var recentDocuments =  function(){
+    var jqxhr = $.getJSON( API_DOMAIN + "/api/"+ API_VERSION +"/banner/"+ BANNER_ID +"/document/recent/" + RECENT_DOCS_DAYS , function(json) {
+     
+        var i=0;
+            $.each(json, function(index, element) {
+                inspectNode(element, json);
+                i++;
+            });
+        })
+
+        .done(function(){
+            initNav();
+            initSubNav();
+            initFileOpen();
+            initListViewItems();        
+    });
 }
