@@ -1,7 +1,7 @@
 const API_DOMAIN = "http://localhost:8000";
 const API_VERSION = "v1";
 const BANNER_ID = 1;
-
+const RECENT_DOCS_DAYS = 21;
 
 var app = {
     // Application Constructor
@@ -37,11 +37,7 @@ var app = {
 
 $( document ).ready(function() {
     loadJSONNavigation();  
-    // initNav();
-    // initSubNav();
     initClose();
-    // initFileOpen();
-    // initListViewItems();
 });
 
 $('#logo').click(function(){  loadIndex() });
@@ -63,7 +59,6 @@ var initSubNav = function()
         var nav = $(this).attr('data-subnav');
         var title = $(this).attr('data-title');
         var parent = $(this).attr('data-parent');
-     //   console.log("attempting to load subnav: " + nav);
         loadNavigation(nav);
      });   
 }
@@ -82,10 +77,6 @@ var initFileOpen = function()
         el = document.getElementById("overlay");
         el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
         var file = $(this).attr('data-file');
-        console.log(file);
-
-        //$("#overlay div embed").attr("src","/content/pdf"+file);
-      //  $('#overlay div').load("/content/pdf/"+file).fadeIn(500);
     });
 }
 
@@ -176,17 +167,11 @@ var loadContent = function(title, id)
     $('#main').fadeOut(10);
     closePanel();
 
-    $('#main').load("content/list.html").fadeIn(1000);
-    //set the hidden element to the item id
-    $("#listViewId").html(id);   
-    $("#listViewTitle").html(title);   
+    $( "#main" ).load( "content/list.html", function() {
+        loadListView(title, id);
+    }).fadeIn(1000);
 
     initNav();
-}
-
-var loadPDF = function()
-{
-
 }
 
 var closeModal = function()
@@ -209,8 +194,6 @@ var setBackButton = function(whereTo)
 }
 
 var loadIndex = function(){
-    // I don't love this function
-    console.log("home button clicked");
     $("#navtitle").hide();
     $("#close").hide();
     $(".navbox").hide();
@@ -234,7 +217,6 @@ var loadIndex = function(){
 
 var loadJSONNavigation = function()
 {
-
     var jqxhr = $.getJSON( API_DOMAIN + "/api/"+ API_VERSION +"/banner/"+ BANNER_ID +"/navigation", function(json) {
      
         var i=0;
@@ -245,20 +227,10 @@ var loadJSONNavigation = function()
         })
 
         .done(function(){
-
-        console.log("json loaded... init the nav");
-
-        initNav();
-        console.log("nav done!");
-
-        initSubNav();
-        console.log("sub nav done!");
-
-        initFileOpen();
-        console.log("file open done!");
-
-        initListViewItems();        
-        console.log("list view done!");
+            initNav();
+            initSubNav();
+            initFileOpen();
+            initListViewItems();        
     });
 
 }
@@ -266,7 +238,6 @@ var loadJSONNavigation = function()
 var inspectNode = function(node, json)
 {
     if(node.is_child == 0){ //this is a parent node
-        console.log("//// CONSTRUCTING TOP LEVEL ITEM ////");
         var thisLabel = node.label;
         var thisId = node.id;
 
@@ -317,26 +288,20 @@ var inspectNode = function(node, json)
             return;
         }
 
-        //if( typeof node.weeks !== "undefined" ){
         if( node.weeks ){
-            console.log("I have weeks?");
-            console.log(node);
 
             var html = constructNavElement("child", thisLabel, thisId, parent_label, parent_id);  
             appendToContainer( subNavContainerId, html);  
 
             var thisLabelWeeks = node.label;
             thisLabelWeeks = thisLabelWeeks.replace(" ", "-");
-            
 
             var parentLabelWeeks = json[node.parent_id].label;
             parentLabelWeeks = parentLabelWeeks.replace(" ", "-");
 
             subNavContainerWeeksId = thisLabelWeeks + "-" + node.id;
-            //var constructSubNavContainer = function( subNavContainerId, parentLabel, thisLabel )
             constructSubNavContainer( subNavContainerWeeksId, parentLabelWeeks, thisLabelWeeks )
             
-
             var weeks = node.weeks;
             $.each(weeks, function(index, week) {
                 var html = createLeafWeeks( week.week, week.week_id );
@@ -349,8 +314,6 @@ var inspectNode = function(node, json)
 
 var constructSubNavContainer = function( subNavContainerId, parentLabel, thisLabel )
 {
-    var css = 'background: #222; color: #bada55; padding: 5px 2px;';
-    console.log ("%c%s", css, "constructSubNavContainer ==> subNavContainerId: " + subNavContainerId +", parentLabel: " + parentLabel + " thisLabel: "+ thisLabel );
     var html;
     html = "<div id='"+subNavContainerId+"' data-subfoldertitle='"+thisLabel+"' data-parent='"+parentLabel+"' class='navbox'></div>";
     $( "#panel" ).append( html );   
@@ -359,25 +322,18 @@ var constructSubNavContainer = function( subNavContainerId, parentLabel, thisLab
 var appendToContainer = function( container, element ) //container MUST be an ID
 {   
     $( "#"+container).append( element );
-    console.log("New nav item appended to " + container);
 }
 
 var constructNavElement = function(nodeType, label, id, parent_label, parent_id)
-{
-    var css = 'background: #fff; color: #c00; border-bottom: 2px solid lime;';    
-
+{   
     var html;
     switch( nodeType ){
         case "topLevel":
-            console.log ("%c%s", css, "constructNavElement ==> nodeType: " + nodeType +", label: " + label + " id: "+ id + " parent_label: " + parent_label + " parent_id: " +parent_id );
-
             html = "<span class='navitem' id='toplevel-"+id+"' data-nav='"+id+"' data-title='"+label+"'>"+label+"</span>";
-
             return html;
             break;
 
         case "child":   
-            console.log ("%c%s", css, "constructNavElement ==> nodeType: " + nodeType +", label: " + label + " id: "+ id + " parent_label: " + parent_label + " parent_id: " +parent_id );
             var navlabel = label.replace(" ", "-");
             var navparent_label = parent_label.replace(" ", "-");
 
@@ -395,7 +351,6 @@ var constructNavElement = function(nodeType, label, id, parent_label, parent_id)
 
 var createLeaf =  function( title, id )
 {
-    console.log("making a leaf: " + title +", " +id);    
     var html; 
     html =        "<div class='selectbox openList' data-listTitle='" + title + "' data-loadList='"+ id +"' style='border: thick solid green;'>"
     html = html + "    <div class='selectbox-content'>"
@@ -410,7 +365,6 @@ var createLeaf =  function( title, id )
 
 var createLeafWeeks =  function( title, id )
 {
-    console.log("making a leaf: " + title +", " +id);    
     var html; 
     html =        "<div class='selectbox openList' data-listTitle='" + title + "' data-loadList='"+ id +"' style='border: thick solid red;'>"
     html = html + "    <div class='selectbox-content'>"
@@ -420,5 +374,29 @@ var createLeafWeeks =  function( title, id )
     html = html + "</div>"    
 
     return html;
+}
 
+var loadListView = function(title, id){
+    $(".listTitle").html(id + " " + title); 
+    var html;
+    var jqxhr = $.getJSON( API_DOMAIN + "/api/"+ API_VERSION + "/folder/" + id , function(json) {
+        
+        var i=0;
+            $.each(json.files, function(index, doc) {
+
+                html =        "<tr>"
+                html = html + "    <td><span class='fileicons file-pdf'></span><span class='filetitle'>"+ doc.title+"</span></td>"
+                html = html + "    <td>"+ doc.description +"</td>"
+                html = html + "    <td>"+ doc.created_at +"</td>"
+                html = html + "    <td></td>"
+                html = html + "</tr>"
+
+                $("#fileListTable").append( html );
+                i++;
+            });
+        })
+
+        .done(function(){
+
+    });    
 }
